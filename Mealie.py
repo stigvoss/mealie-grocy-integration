@@ -1,14 +1,21 @@
+from dataclasses import dataclass
 from typing import TypedDict, NotRequired
 
 import httpx
 
-
+@dataclass
 class Client:
-    def __init__(self, base_url: str, token: str):
+    base_url: str
+    token: str
+
+    def __enter__(self):
         self.client = httpx.Client(
-            base_url=base_url,
-            headers={"Authorization": f"Bearer {token}"}
+            base_url=self.base_url,
+            headers={"Authorization": f"Bearer {self.token}"}
         )
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.client.close()
 
     def get_shopping_lists(self) -> list[ShoppingList]:
         data: Response[ShoppingList] = self.client.get(

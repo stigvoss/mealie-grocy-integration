@@ -1,14 +1,22 @@
+from dataclasses import dataclass
 from typing import TypedDict
 
 import httpx
 
 
+@dataclass
 class Client:
-    def __init__(self, base_url: str, api_key: str):
+    base_url: str
+    api_key: str
+
+    def __enter__(self):
         self.client = httpx.Client(
-            base_url=base_url,
-            headers={"GROCY-API-KEY": api_key}
+            base_url=self.base_url,
+            headers={"GROCY-API-KEY": self.api_key}
         )
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.client.close()
 
     def get_user_field(self, name: str, entity_type: str) -> UserField:
         data: list[UserField] = self.client.get('/api/objects/userfields', params={
