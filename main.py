@@ -48,4 +48,17 @@ if __name__ == '__main__':
             if mealie_recipe is None:
                 continue
 
-            print(mealie_recipe)
+            print(f"{mealie_recipe['name']}")
+
+            for ingredient in mealie_recipe['recipeIngredient']:
+                grocy_product = grocy.get_product_by_mealie_id(ingredient['food']['id'])
+
+                if grocy_product is None:
+                    continue
+
+                grocy_ingredient = grocy.get_recipe_ingredient(grocy_recipe['id'], grocy_product['id'])
+
+                if grocy_ingredient is None:
+                    continue
+
+                print(f" - {grocy_product['name']}")
