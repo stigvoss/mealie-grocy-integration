@@ -32,7 +32,7 @@ class Client:
         ).raise_for_status().json()
         return data['items']
 
-    def get_recipe(self, mealie_id: uuid.UUID) -> Recipe:
+    def get_recipe(self, mealie_id: str) -> Recipe:
         data: Recipe = self.client.get(
             f'/api/recipes/{mealie_id}'
         ).raise_for_status().json()
@@ -43,7 +43,7 @@ class Response[T](TypedDict):
     items: list[T]
 
 class Unit:
-    id: uuid.UUID
+    id: str
     name: str
 
 class Ingredient(TypedDict):
@@ -52,7 +52,7 @@ class Ingredient(TypedDict):
     food: Food
 
 class Recipe(TypedDict):
-    id: uuid.UUID
+    id: str
     name: str
     recipeIngredient: NotRequired[list[Ingredient]]
 
