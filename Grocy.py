@@ -19,7 +19,7 @@ class Client:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.client.close()
 
-    def get_user_field(self, name: str, entity_type: str) -> UserField:
+    def get_user_field(self, name: str, entity_type: str) -> UserField | None:
         data: list[UserField] = self.client.get('/api/objects/userfields', params={
             'query[]': [f"name={name}", f"entity={entity_type}"]
         }).raise_for_status().json()
@@ -35,7 +35,7 @@ class Client:
             'required': 0,
         }).raise_for_status()
 
-    def get_recipe_by_mealie_id(self, mealie_id: str):
+    def get_recipe_by_mealie_id(self, mealie_id: str) -> Recipe | None:
         data: list[Recipe] = self.client.get('/api/objects/recipes').raise_for_status().json()
         for recipe in data:
             if recipe.get('userfields', {}).get('mealieId') == str(mealie_id):
