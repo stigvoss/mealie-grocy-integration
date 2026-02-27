@@ -13,7 +13,6 @@ if __name__ == '__main__':
         Mealie.Client(config['mealie']['url'], config['mealie']['token']) as mealie,
         Grocy.Client(config['grocy']['url'], config['grocy']['key']) as grocy
     ):
-
         products_user_field = grocy.get_user_field(
             'mealieId',
             'products'
