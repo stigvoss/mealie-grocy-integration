@@ -9,41 +9,44 @@ if __name__ == '__main__':
         config = ConfigParser()
         config.read_file(config_file)
 
-    with Mealie.Client(config['mealie']['url'], config['mealie']['token']) as mealie:
-        with Grocy.Client(config['grocy']['url'], config['grocy']['key']) as grocy:
-            products_user_field = grocy.get_user_field(
+    with (
+        Mealie.Client(config['mealie']['url'], config['mealie']['token']) as mealie,
+        Grocy.Client(config['grocy']['url'], config['grocy']['key']) as grocy
+    ):
+
+        products_user_field = grocy.get_user_field(
+            'mealieId',
+            'products'
+        )
+
+        if products_user_field is None:
+            grocy.create_mealie_field(
                 'mealieId',
                 'products'
             )
 
-            if products_user_field is None:
-                grocy.create_mealie_field(
-                    'mealieId',
-                    'products'
-                )
+        recipes_user_field = grocy.get_user_field(
+            'mealieId',
+            'recipes'
+        )
 
-            recipes_user_field = grocy.get_user_field(
+        if recipes_user_field is None:
+            grocy.create_mealie_field(
                 'mealieId',
                 'recipes'
             )
 
-            if recipes_user_field is None:
-                grocy.create_mealie_field(
-                    'mealieId',
-                    'recipes'
-                )
+        mealie_recipies = mealie.get_recipes()
 
-            mealie_recipies = mealie.get_recipes()
+        for mealie_recipe in mealie_recipies:
+            grocy_recipe = grocy.get_recipe_by_mealie_id(mealie_recipe['id'])
 
-            for mealie_recipe in mealie_recipies:
-                grocy_recipe = grocy.get_recipe_by_mealie_id(mealie_recipe['id'])
+            if grocy_recipe is None:
+                continue
 
-                if grocy_recipe is None:
-                    continue
+            mealie_recipe = mealie.get_recipe(mealie_recipe['id'])
 
-                mealie_recipe = mealie.get_recipe(mealie_recipe['id'])
+            if mealie_recipe is None:
+                continue
 
-                if mealie_recipe is None:
-                    continue
-
-                print(mealie_recipe)
+            print(mealie_recipe)
