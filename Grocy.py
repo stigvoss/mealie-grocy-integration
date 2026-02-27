@@ -27,7 +27,7 @@ class Client:
             'required': 0,
         })
 
-    def get_recipe_by_mealie_id(self, mealie_id: uuid.UUID):
+    def get_recipe_by_mealie_id(self, mealie_id: str):
         data: list[Recipe] = self.client.get('/api/objects/recipes').json()
         for recipe in data:
             if recipe.get('userfields', {}).get('mealieId') == str(mealie_id):

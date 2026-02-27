@@ -60,5 +60,5 @@ class ShoppingList(TypedDict):
     name: str
 
 class Food(TypedDict):
-    id: uuid.UUID
+    id: str
     name: str
