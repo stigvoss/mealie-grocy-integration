@@ -1,7 +1,6 @@
-import uuid
+from typing import TypedDict
 
 import httpx
-from typing import TypedDict
 
 
 class Client:

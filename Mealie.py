@@ -1,4 +1,3 @@
-import uuid
 from typing import TypedDict, NotRequired
 
 import httpx
