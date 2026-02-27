@@ -13,6 +13,7 @@ class Client:
             base_url=self.base_url,
             headers={"Authorization": f"Bearer {self.token}"}
         )
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.client.close()
