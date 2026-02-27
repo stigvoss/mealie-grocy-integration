@@ -42,6 +42,33 @@ class Client:
                 return recipe
         return None
 
+    def get_product_by_mealie_id(self, mealie_id: str) -> Product | None:
+        data: list[Product] = self.client.get('/api/objects/products').raise_for_status().json()
+        for product in data:
+            if product.get('userfields', {}).get('mealieId') == str(mealie_id):
+                return product
+        return None
+
+    def get_recipe_ingredient(self, recipe_id: int, product_id: int) -> RecipeIngredient | None:
+        data: list[RecipeIngredient] = self.client.get('/api/objects/recipes_pos', params={
+            'query[]': [f"recipe_id={recipe_id}", f"product_id={product_id}"]
+        }).raise_for_status().json()
+
+        for ingredient in data:
+            if ingredient['recipe_id'] == recipe_id and ingredient['product_id'] == product_id:
+                return ingredient
+
+        return None
+
+class Product(TypedDict):
+    id: int
+    name: str
+    userfields: dict
+
+class RecipeIngredient(TypedDict):
+    product_id: int
+    recipe_id: int
+
 class Recipe(TypedDict):
      id: int
      name: str
