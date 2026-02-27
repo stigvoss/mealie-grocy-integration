@@ -22,7 +22,7 @@ class Client:
     def get_user_field(self, name: str, entity_type: str) -> UserField:
         data: list[UserField] = self.client.get('/api/objects/userfields', params={
             'query[]': [f"name={name}", f"entity={entity_type}"]
-        }).json()
+        }).raise_for_status().json()
         return next(iter(data), None)
 
     def create_mealie_field(self, name: str, entity_type: str):
@@ -33,10 +33,10 @@ class Client:
             'type': 'text-single-line',
             'showInTable': 0,
             'required': 0,
-        })
+        }).raise_for_status()
 
     def get_recipe_by_mealie_id(self, mealie_id: str):
-        data: list[Recipe] = self.client.get('/api/objects/recipes').json()
+        data: list[Recipe] = self.client.get('/api/objects/recipes').raise_for_status().json()
         for recipe in data:
             if recipe.get('userfields', {}).get('mealieId') == str(mealie_id):
                 return recipe
