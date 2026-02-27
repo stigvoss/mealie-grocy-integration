@@ -19,7 +19,7 @@ class Client:
         return data['items']
 
     def get_foods(self) -> list[Food]:
-        data: Response[Recipe] = self.client.get(
+        data: Response[Food] = self.client.get(
             '/api/foods',
             params={ "perPage": -1 }
         ).raise_for_status().json()
