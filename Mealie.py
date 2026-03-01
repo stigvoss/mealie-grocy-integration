@@ -79,7 +79,7 @@ class Client:
         )
         return data
 
-    def get_mealplan(self):
+    def get_mealplans(self):
         data = self.client.get(
             "/api/households/mealplans",
             params={
