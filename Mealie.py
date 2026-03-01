@@ -37,12 +37,12 @@ class ShoppingList(TypedDict):
 
 @dataclass
 class Client:
-    base_url: str
-    token: str
+    _base_url: str
+    _token: str
 
     def __enter__(self):
         self.client = httpx.Client(
-            base_url=self.base_url, headers={"Authorization": f"Bearer {self.token}"}
+            base_url=self._base_url, headers={"Authorization": f"Bearer {self._token}"}
         )
         return self
 

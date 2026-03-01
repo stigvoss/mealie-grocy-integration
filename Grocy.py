@@ -34,12 +34,12 @@ class UserFieldQuery(TypedDict):
 
 @dataclass
 class Client:
-    base_url: str
-    api_key: str
+    _base_url: str
+    _api_key: str
 
     def __enter__(self):
         self.client = httpx.Client(
-            base_url=self.base_url, headers={"GROCY-API-KEY": self.api_key}
+            base_url=self._base_url, headers={"GROCY-API-KEY": self._api_key}
         )
         return self
 
