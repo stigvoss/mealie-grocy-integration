@@ -4,6 +4,29 @@ from typing import TypedDict
 import httpx
 
 
+class Product(TypedDict):
+    id: int
+    name: str
+    userfields: dict
+
+class RecipeIngredient(TypedDict):
+    product_id: int
+    recipe_id: int
+
+class Recipe(TypedDict):
+     id: int
+     name: str
+     userfields: dict
+
+class UserField(TypedDict):
+    id: int
+    name: str
+    entity: str
+
+class UserFieldQuery(TypedDict):
+    name: str
+    entity: str
+
 @dataclass
 class Client:
     base_url: str
@@ -59,26 +82,3 @@ class Client:
                 return ingredient
 
         return None
-
-class Product(TypedDict):
-    id: int
-    name: str
-    userfields: dict
-
-class RecipeIngredient(TypedDict):
-    product_id: int
-    recipe_id: int
-
-class Recipe(TypedDict):
-     id: int
-     name: str
-     userfields: dict
-
-class UserField(TypedDict):
-    id: int
-    name: str
-    entity: str
-
-class UserFieldQuery(TypedDict):
-    name: str
-    entity: str

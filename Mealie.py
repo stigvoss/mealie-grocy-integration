@@ -1,7 +1,33 @@
+import datetime
 from dataclasses import dataclass
 from typing import TypedDict, NotRequired
 
 import httpx
+
+
+class Response[T](TypedDict):
+    items: list[T]
+
+class Unit:
+    id: str
+    name: str
+
+class Food(TypedDict):
+    id: str
+    name: str
+
+class Ingredient(TypedDict):
+    quantity: float
+    unit: Unit
+    food: Food
+
+class Recipe(TypedDict):
+    id: str
+    name: str
+    recipeIngredient: NotRequired[list[Ingredient]]
+
+class ShoppingList(TypedDict):
+    name: str
 
 @dataclass
 class Client:
@@ -44,28 +70,3 @@ class Client:
             f'/api/recipes/{mealie_id}'
         ).raise_for_status().json()
         return data
-
-
-class Response[T](TypedDict):
-    items: list[T]
-
-class Unit:
-    id: str
-    name: str
-
-class Ingredient(TypedDict):
-    quantity: float
-    unit: Unit
-    food: Food
-
-class Recipe(TypedDict):
-    id: str
-    name: str
-    recipeIngredient: NotRequired[list[Ingredient]]
-
-class ShoppingList(TypedDict):
-    name: str
-
-class Food(TypedDict):
-    id: str
-    name: str
