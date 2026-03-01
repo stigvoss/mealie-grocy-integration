@@ -70,3 +70,16 @@ class Client:
             f'/api/recipes/{mealie_id}'
         ).raise_for_status().json()
         return data
+
+    def get_mealplan(self):
+        data = self.client.get(
+            '/api/households/mealplans',
+            params={
+                "perPage": -1,
+                "start_date": datetime.date.today(),
+                "orderBy": "date",
+                "orderDirection": "asc",
+                "queryFilter": "recipeId IS NOT NULL"
+            }
+        )
+        return data
